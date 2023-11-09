@@ -3,7 +3,8 @@
 # Creating associative array to store all possible install commands
 declare -A package_install_commands
 
-#Install command type is identified by a distribution type which is defined by presence of particular release directory
+#Install command type is identified by a distribution type
+#which is defined by presence of particular release directory
 package_install_commands["/etc/redhat-release"]="yum install"
 package_install_commands["/etc/arch-release"]="pacman -S"
 package_install_commands["/etc/gentoo-release"]="emerge"
