@@ -1,0 +1,173 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  VPC1:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      Tags:
+        - Key: Name
+          Value: my-vpc-1
+
+  PublicSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: us-east-1a
+      Tags:
+        - Key: Name
+          Value: my-public-subnet-1
+
+  PublicSubnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref VPC1
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: us-east-1b
+      Tags:
+        - Key: Name
+          Value: my-public-subnet-2
+
+  RouteTable1:
+    Type: 'AWS::EC2::RouteTable'
+    Properties:
+      VpcId: !Ref VPC1
+      Tags:
+        - Key: Name
+          Value: my-route-table-1
+
+  PublicSubnet1Association:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref RouteTable1
+      SubnetId: !Ref PublicSubnet1
+
+  PublicSubnet2Association:
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
+    Properties:
+      RouteTableId: !Ref RouteTable1
+      SubnetId: !Ref PublicSubnet2
+
+  InternetGateway1:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties:
+      Tags:
+        - Key: Name
+          Value: ig-1
+
+  PublicRoute1:
+    Type: 'AWS::EC2::Route'
+    Properties:
+      RouteTableId: !Ref RouteTable1
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway1
+
+  VPCGatewayAttachment1:
+    Type: 'AWS::EC2::VPCGatewayAttachment'
+    Properties:
+      InternetGatewayId: !Ref InternetGateway1
+      VpcId: !Ref VPC1
+
+  SecurityGroup1:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupName: my-security-group-1
+      GroupDescription: My public security group
+      VpcId: !Ref VPC1
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+
+  FGCluster:
+    Type: 'AWS::ECS::Cluster'
+    Properties:
+      ClusterName: fargate-cluster
+      CapacityProviders:
+        - FARGATE
+
+  FargateTaskDefinition:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      Family: fg-td-0
+      Cpu: .5 vCPU
+      Memory: 1 GB
+      ExecutionRoleArn: ecsTaskExecutionRole
+      RequiresCompatibilities:
+        - FARGATE
+      NetworkMode: awsvpc
+      ContainerDefinitions:
+        - Name: my-app-0
+          Image: !Ref ImageURI
+          Essential: true
+          PortMappings:
+            - ContainerPort: 8082
+              Protocol: tcp
+          Cpu: 100
+          Memory: 1024
+
+  FGService:
+    Type: 'AWS::ECS::Service'
+    DependsOn: HTTPListener
+    Properties:
+      LaunchType: FARGATE
+      ServiceName: fg-service-0
+      TaskDefinition: !GetAtt FargateTaskDefinition.TaskDefinitionArn
+      Cluster: !Ref FGCluster
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets:
+            - !Ref PublicSubnet1
+            - !Ref PublicSubnet2
+          SecurityGroups:
+            - !Ref SecurityGroup1
+      LoadBalancers:
+        - ContainerName: my-app-0
+          ContainerPort: 8082
+          TargetGroupArn: !Ref FGTargetGroup
+
+  FGTargetGroup:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      Name: fg-tg-0
+      TargetType: ip
+      VpcId: !Ref VPC1
+      HealthCheckPath: /health
+      Protocol: HTTP
+      Port: 80
+
+  FargateServiceLoadBalancer:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      Type: application
+      Name: lb-fg-service
+      Scheme: internet-facing
+      Subnets:
+        - !Ref PublicSubnet1
+        - !Ref PublicSubnet2
+      SecurityGroups:
+        - !Ref SecurityGroup1
+
+  HTTPListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref FGTargetGroup
+      LoadBalancerArn: !Ref FargateServiceLoadBalancer
+      Port: '80'
+      Protocol: HTTP
+
+Parameters:
+  ImageURI:
+    Type: String
+    Default: 886088716398.dkr.ecr.us-east-1.amazonaws.com/devops-microservices:latest
+
+Outputs:
+  LoadBalancerDNS:
+    Value: !GetAtt FargateServiceLoadBalancer.DNSName
+    Export:
+      Name: load-balancer-dns-output
