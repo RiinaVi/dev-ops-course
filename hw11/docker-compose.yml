@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  # Name of service.
+  app01:
+    # Define image from DockerHub
+    image: riinavi/app01:latest
+    deploy:
+      # Number of replicas
+      replicas: 4
+    ports:
+      # Expose container port 8083 to host on port 8083 (HOST:CONTAINER)
+      - '8083:8083'
+  app02:
+    # Define image from DockerHub
+    image: riinavi/app02:latest
+    deploy:
+      # Number of replicas
+      replicas: 4
+    ports:
+      # Expose container port 8084 to host on port 8084 (HOST:CONTAINER)
+      - '8084:8084'
+  # Open source docker-swarm-visualizer service
+  visualizersvc:
+    # Image of docker-swarm-visualizer app
+    image: dockersamples/visualizer
+    # This service will run only when app0 has no failure
+    depends_on:
+      - app01
+      - app02
+    deploy:
+      placement:
+        # We want to deploy this service only in manager node (suppose we have only one)
+        constraints:
+          - 'node.role==manager'
+    ports:
+      # Host port : container port
+      - '5000:8080'
+    volumes:
+      # Bind volumne host to container
+      - '/var/run/docker.sock:/var/run/docker.sock'
