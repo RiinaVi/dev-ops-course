@@ -85,7 +85,7 @@ kubectl create secret generic mysql-secret --from-literal=mysql-user=admin --fro
 kubectl create namespace riinavi-namespace
 
 #create mysql deployment
-kubectl run mysql-deployment --image=mysql:latest --env="MYSQL_ROOT_PASSWORD=$(kubectl get secret mysql-secret -o=jsonpath='{.data.mysql-password}' | base64 --decode)" --env="MYSQL_DATABASE=mydb" --env="MYSQL_USER=$(kubectl get secret mysql-secret -o=jsonpath='{.data.mysql-user}' | base64 --decode)" --env="MYSQL_PASSWORD=$(kubectl get secret mysql-secret -o=jsonpath='{data.mysql-password}' | base64 --decode)"
+kubectl run mysql-deployment --image=mysql:latest --env="MYSQL_ROOT_PASSWORD=$(kubectl get secret mysql-secret -o=jsonpath='{.data.mysql-password}' | base64 --decode)" --env="MYSQL_DATABASE=mydb" --env="MYSQL_USER=$(kubectl get secret mysql-secret -o=jsonpath='{.data.mysql-user}' | base64 --decode)" --env="MYSQL_PASSWORD=$(kubectl get secret mysql-secret -o=jsonpath='{.data.mysql-password}' | base64 --decode)"
 
 #connect to pod
 kubectl exec --stdin --tty mysql-deployment -- /bin/bash
