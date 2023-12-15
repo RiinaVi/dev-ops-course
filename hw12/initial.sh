@@ -93,3 +93,4 @@ mysql -p
 
 #delete everything
 kubectl delete all --all
+kubectl delete namespace riinavi-namespace
