@@ -1,53 +1,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-service
+  name: app01-service
 spec:
-  ports:
-    - port: 3306
   selector:
-    app: mysql
+    app: app01
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      containerPort: 30000
   type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: app01-deployment
 spec:
+  replicas: 3
   selector:
     matchLabels:
-      app: mysql
-  strategy:
-    type: Recreate
+      app: app01
   template:
     metadata:
       labels:
-        app: mysql
+        app: app01
     spec:
       containers:
-        - image: mysql:5.8
-          name: mysql
-          env:
-            - name: MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secrets
-                  key: MYSQL_USER
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secrets
-                  key: MYSQL_ROOT_PASSWORD
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secrets
-                  key: MYSQL_PASSWORD
-            - name: MYSQL_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secrets
-                  key: MYSQL_DATABASE
+        - image: riinavi/app01:latest
+          name: app01
           ports:
-            - containerPort: 3306
-              name: mysql
+            - containerPort: 8080
