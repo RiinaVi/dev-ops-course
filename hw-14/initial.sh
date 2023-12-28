@@ -24,9 +24,6 @@ chmod +x /usr/local/bin/kubectl
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /usr/local/bin
 ls -la
 
-#mv /tmp/eksctl /usr/local/bin
-
-#check that eksctl works
 eksctl version
 
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
@@ -43,7 +40,7 @@ eksctl get cluster --name eks-14 --region us-east-1
 
 aws eks update-kubeconfig --name eks-14 --region us-east-1
 
-kubectl get nodes #maybe will need to change user
+kubectl get nodes
 
 helm repo add stable https://charts.helm.sh/stable
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -66,16 +63,20 @@ kubectl edit svc stable-grafana -n prometheus # type: ClusterIP -> LoadBalancer
 
 kubectl get svc -n prometheus #smth changed - External IP -> grafana
 
-# get
-kubectl get secrets -n prometheus stable-grafana
+# get grafana password and login with it into grafana as 'admin'
 kubectl get secrets -n prometheus stable-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
-#login with it into grafana as 'admin'
 
 #open grafana and import dashboard 15760
 
-#create deployment.yml
 kubectl apply -f deployment.yml
 
-kubectl get svc
+helm install loki grafana/loki -n monitoring -f loki-values.yml
+
+kubectl create -f daemonset.yml
+kubectl get daemonset -n prometheus
+kubectl create -f node-exporter.yml
+kubectl get endpoints -n prometheus
+
+helm upgrade --install promtail grafana/promtail -f promtail-values.yml
 
 eksctl delete cluster --name eks-14

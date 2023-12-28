@@ -1,0 +1,19 @@
+loki:
+  commonConfig:
+    replication_factor: 1
+  storage:
+    type: 'filesystem'
+  auth_enabled: false
+singleBinary:
+  replicas: 1
+
+persistence:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 50Gi
+  annotations: {}
+
+memberlist:
+  service:
+    publishNotReadyAddresses: true
