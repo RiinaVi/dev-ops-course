@@ -75,7 +75,7 @@ EXIT
 #Включіть бінарне логування
 #Створіть користувацький обліковий запис для реплікації
 
-vim /etc/mysql/my.conf
+sudo vim /etc/mysql/my.cnf
 
 # after '!includedir insert
 [mysqld]
@@ -84,9 +84,9 @@ server-id = 1
 log-bin = mysql-bin
 
 
-systemctl restart mysql.service
+sudo systemctl restart mysql.service
 
-mysql
+sudo mysql
 
 SHOW MASTER STATUS;
 EXIT;
@@ -98,7 +98,7 @@ EXIT;
 #Зробіть дамп бази даних для імпорту на вторинний сервер
 
 
-mysqldump MyStore > store.sql
+mysqldump BookStore > store.sql
 
 #Copy store.sql into replica
 
@@ -115,21 +115,21 @@ mysqldump MyStore > store.sql
 vim store.sql
 
 
-vim /etc/mysql/my.conf
+sudo vim /etc/mysql/my.cnf
 
 # after '!includedir insert
 [mysqld]
 server-id = 2
 
 
-mysql
+sudo mysql
 
 CREATE DATABASE BookStore;
 EXIT;
 
 mysql BookStore < store.sql
 
-mysql
+sudo mysql
 
 use BookStore;
 
@@ -142,7 +142,7 @@ use BookStore;
 
 #paste master private IP
 #paste log file name from master status
-CHANGE MASTER TO MASTER_HOST='10.0.0.0', MASTER_USER='replica_user', MASTER_PASSWORD='passpord123', MASTER_LOG_FILE='mysql-bin.000003', MASTER_LOG_POS=157
+CHANGE MASTER TO MASTER_HOST='172.31.47.146', MASTER_USER='replica_user', MASTER_PASSWORD='passpord123', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=157;
 
 
 
@@ -157,7 +157,7 @@ START SLAVE;
 
 #Використовуйте команду SHOW SLAVE STATUS на вторинному сервері для перевірки стану реплікації
 
-SHOW SLAVE STATUS;
+SHOW SLAVE STATUS; #error
 
 systemctl restart mysql.service
 
@@ -173,11 +173,18 @@ STOP SLAVE SQL_THREAD;
 SET GLOBAL sql_slave_skip_counter = 1;
 START SLAVE SQL_THREAD;
 
-mysql
+sudo mysql
 
-#do some insert
+#do some insert on master
+
+INSERT INTO `Products`
+  ( `ProductID`, `Name`, `Price` )
+VALUES
+  ( 10, 'The Picture of Dorian Gray', 399);
 
 #on REPLICA check that changes are there
+
+SELECT * FROM Products;
 
 #8 Симуляція збою мастера:
 
@@ -186,3 +193,11 @@ mysql
 
 #kill master
 #check replica status to see that it's now became master
+
+#Check that replication works again after master renewal
+INSERT INTO `Products`
+  ( `ProductID`, `Name`, `Price` )
+VALUES
+  ( 11, 'Romeo and Juliet', 249);
+  SELECT * FROM Products;
+
