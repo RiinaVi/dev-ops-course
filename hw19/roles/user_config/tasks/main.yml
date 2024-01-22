@@ -1,0 +1,28 @@
+- name: "Create {{ group_name }} group"
+  ansible.builtin.group:
+    name: "{{ group_name }}"
+    state: present
+
+- name: "Create devops user within {{ group_name }} group"
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    password: "{{ default_user_password | password_hash('sha512','A512') }}"
+    group: "{{ group_name }}"
+    state: present
+
+- name: Create a 2048-bit SSH key
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+- name: Copy .bashrc file to remote server
+  ansible.builtin.copy:
+    src: files/.bashrc
+    dest: ~/.bashrc
+- name: Source .bashrc
+  shell: source ~/.bashrc
+  args:
+    executable: /bin/bash
+
