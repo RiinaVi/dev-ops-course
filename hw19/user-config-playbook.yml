@@ -1,0 +1,6 @@
+---
+- name: User configuration
+  hosts: all
+  become: true
+  roles:
+    - user_config
