@@ -4,6 +4,7 @@
     update_cache: yes
     name:
       - mysql-server
+      - python3-mysqldb
 
 - name: "Create {{ mysql_root_user }} user"
   community.mysql.mysql_user:
