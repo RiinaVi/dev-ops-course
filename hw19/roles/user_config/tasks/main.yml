@@ -20,9 +20,9 @@
 - name: Copy .bashrc file to remote server
   ansible.builtin.copy:
     src: files/.bashrc
-    dest: ~/.bashrc
+    dest: "/home/{{ user_name }}/.bashrc"
 - name: Source .bashrc
-  shell: source ~/.bashrc
+  shell: . .bashrc
   args:
     executable: /bin/bash
 
