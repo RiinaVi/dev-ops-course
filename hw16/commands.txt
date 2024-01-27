@@ -1,0 +1,203 @@
+# Створення бази:
+
+use gymDatabase
+
+#Створення колекцій
+
+#Clients: client_id, name, age, email
+
+db.createCollection('clients', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['client_id', 'name', 'age', 'email'],
+      properties: {
+        client_id: {
+          bsonType: 'int',
+          description: 'must be an integer and is required'
+        },
+        name: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
+        },
+        age: {
+          "bsonType" : "int",
+          "description" : "must be an integer and is required"
+        },
+        email: {
+          bsonType: 'string',
+          description: 'must be a string and is required',
+        }
+      }
+    }
+  }
+});
+
+
+#Memberships: membership_id, client_id, start_date, end_date (YYYY-mm-dd), type ('student', 'senior', 'medical', 'full', 'premium')
+
+db.createCollection('memberships', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['membership_id', 'client_id', 'start_date', 'end_date', 'type'],
+      properties: {
+        membership_id: {
+          bsonType: 'int',
+          description: 'must be an integer and is required'
+        },
+        client_id: {
+          bsonType: 'int',
+          description: 'must be an integer and is required'
+        },
+        start_date: {
+          bsonType: 'date',
+          description: 'must be a date and is required'
+        },
+        end_date: {
+          bsonType: 'date',
+          description: 'must be a date and is required'
+        },
+        type: {
+          enum: [ 'student', 'senior', 'medical', 'full', 'premium' ],
+          description: 'must be either student, senior, medical, full or premium'
+        }
+      }
+    }
+  }
+});
+
+#Workouts: workout_id, description, difficulty
+
+db.createCollection('workouts', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['workout_id', 'description', 'difficulty'],
+      properties: {
+        workout_id: {
+          bsonType: 'int',
+          description: 'must be an integer and is required'
+        },
+        description: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
+        },
+        difficulty: {
+          enum: [ 'beginner', 'intermediate', 'advanced' ],
+          description: 'must be either beginner, intermediate or advanced'
+        }
+      }
+    }
+  }
+});
+
+
+#Trainers: trainer_id, name, specialization
+
+db.createCollection('trainers', {
+  validator: {
+    $jsonSchema: {
+      bsonType: 'object',
+      required: ['trainer_id', 'name', 'specialization' ],
+      properties: {
+        trainer_id: {
+          bsonType: 'int',
+          description: 'must be an integer and is required'
+        },
+        name: {
+          bsonType: 'string',
+          description: 'must be a string and is required'
+        },
+        specialization: {
+          bsonType: 'string',
+          description: 'must be a string and is required',
+        }
+      }
+    }
+  }
+});
+
+
+#Заповнення даними
+db.clients.insertMany([
+    { client_id: NumberInt(1), name: "Michael Scott", age: NumberInt(35), email: "m.scott@mail.com" },
+    { client_id: NumberInt(2), name: "Dwight Schrute", age: NumberInt(30), email: "d.schrute@mail.com" },
+    { client_id: NumberInt(3), name: "Jim Halpert", age: NumberInt(25), email: "j.halpert@mail.com" },
+    { client_id: NumberInt(4), name: "Pam Beesly", age: NumberInt(23), email: "p.beesly@mail.com" },
+    { client_id: NumberInt(5), name: "Ryan Howard", age: NumberInt(21), email: "r.howard@mail.com" },
+    { client_id: NumberInt(6), name: "Stanley Hudson", age: NumberInt(46), email: "s.hudson@mail.com" },
+    { client_id: NumberInt(7), name: "Kevin Malone", age: NumberInt(33), email: "k.malone@mail.com" },
+    { client_id: NumberInt(8), name: "Meredith Palmer", age: NumberInt(40), email: "m.palmer@mail.com" },
+    { client_id: NumberInt(9), name: "Angela Martin", age: NumberInt(29), email: "a.martin@mail.com" },
+    { client_id: NumberInt(10), name: "Oscar Martinez", age: NumberInt(28), email: "o.martinez@mail.com" },
+    { client_id: NumberInt(11), name: "Phyllis Vance-Lapin", age: NumberInt(35), email: "p.lapin@mail.com" },
+    { client_id: NumberInt(12), name: "Kelly Kapoor", age: NumberInt(21), email: "k.kapoor@mail.com" },
+    { client_id: NumberInt(13), name: "Toby Flenderson", age: NumberInt(37), email: "t.flenderson@mail.com" },
+    { client_id: NumberInt(14), name: "Creed Bratton", age: NumberInt(62), email: "c.bratton@mail.com" },
+    { client_id: NumberInt(15), name: "Darryl Philbin", age: NumberInt(33), email: "d.philbin@mail.com" }
+])
+
+db.memberships.insertMany([
+    { membership_id: NumberInt(1), client_id: NumberInt(1), type: "premium", start_date: new Date("2005-04-29"), end_date: new Date("2006-04-29") },
+    { membership_id: NumberInt(2), client_id: NumberInt(2), type: "premium", start_date: new Date("2005-04-29"), end_date: new Date("2016-06-01") },
+    { membership_id: NumberInt(3), client_id: NumberInt(3), type: "full", start_date: new Date("2003-12-05"), end_date: new Date("2007-07-15") },
+    { membership_id: NumberInt(4), client_id: NumberInt(4), type: "student", start_date: new Date("2010-03-18"), end_date: new Date("2020-01-01") },
+    { membership_id: NumberInt(5), client_id: NumberInt(5), type: "student", start_date: new Date("2006-02-27"), end_date: new Date("2018-06-30") },
+    { membership_id: NumberInt(6), client_id: NumberInt(6), type: "medical", start_date: new Date("2011-11-04"), end_date: new Date("2023-11-06") },
+    { membership_id: NumberInt(7), client_id: NumberInt(7), type: "medical", start_date: new Date("2004-09-19"), end_date: new Date("2008-09-24") },
+    { membership_id: NumberInt(8), client_id: NumberInt(8), type: "full", start_date: new Date("2008-06-10"), end_date: new Date("2019-06-07") },
+    { membership_id: NumberInt(9), client_id: NumberInt(9), type: "full", start_date: new Date("2009-08-14"), end_date: new Date("2017-04-21") },
+    { membership_id: NumberInt(10), client_id: NumberInt(10), type: "premium", start_date: new Date("2012-10-23"), end_date: new Date("2014-10-25") },
+    { membership_id: NumberInt(11), client_id: NumberInt(11), type: "medical", start_date: new Date("2004-08-09"), end_date: new Date("2006-12-02") },
+    { membership_id: NumberInt(12), client_id: NumberInt(12), type: "premium", start_date: new Date("2013-02-24"), end_date: new Date("2006-07-20") },
+    { membership_id: NumberInt(13), client_id: NumberInt(13), type: "full", start_date: new Date("2006-05-05"), end_date: new Date("2010-01-22") },
+    { membership_id: NumberInt(14), client_id: NumberInt(14), type: "senior", start_date: new Date("2010-11-16"), end_date: new Date("2006-09-18") },
+    { membership_id: NumberInt(15), client_id: NumberInt(15), type: "full", start_date: new Date("2008-03-03"), end_date: new Date("2006-11-12") }
+])
+
+db.workouts.insertMany([
+  { workout_id: NumberInt(1), description: "CARDIOVASCULAR", difficulty: "beginner" },
+  { workout_id: NumberInt(2), description: "STRENGTH", difficulty: "intermediate" },
+  { workout_id: NumberInt(3), description: "HIGH-INTENSITY INTERVAL TRAINING", difficulty: "advanced" },
+  { workout_id: NumberInt(4), description: "GROUP FITNESS CLASSES", difficulty: "beginner" },
+  { workout_id: NumberInt(5), description: "CIRCUIT TRAINING", difficulty: "advanced" },
+  { workout_id: NumberInt(6), description: "BODYWEIGHT", difficulty: "intermediate" },
+  { workout_id: NumberInt(7), description: "FUNCTIONAL TRAINING", difficulty: "intermediate" },
+  { workout_id: NumberInt(8), description: "SUSPENSION TRAINING", difficulty: "intermediate" },
+  { workout_id: NumberInt(9), description: "AQUATIC EXERCISE", difficulty: "beginner" }
+])
+
+db.trainers.insertMany([
+    { trainer_id: NumberInt(1), name: "Roy Anderson", specialization: "Bodybuilding Specialist" },
+    { trainer_id: NumberInt(2), name: "Jan Levinson", specialization: "Pilates" },
+    { trainer_id: NumberInt(3), name: "Erin Hannon", specialization: "Senior Fitness Specialist" },
+    { trainer_id: NumberInt(4), name: "Gabe Lewis", specialization: "Weight loss Transformation Specialist" },
+    { trainer_id: NumberInt(5), name: "Holly Flax", specialization: "Yoga" },
+    { trainer_id: NumberInt(6), name: "Nellie Bertram", specialization: "Youth Fitness Specialist" },
+    { trainer_id: NumberInt(7), name: "Andy Bernard", specialization: "Health Coaching" },
+    { trainer_id: NumberInt(8), name: "Pete Miller", specialization: "Group Exercise Instructor" }
+])
+
+
+#Знайдіть всіх клієнтів віком понад 30 років
+db.clients.find( { age: { $gt: 30 } } )
+
+#Перелічіть тренування із середньою складністю
+db.workouts.find( { difficulty: { $eq: "intermediate" } } )
+
+#Покажіть інформацію про членство клієнта з певним client_id
+db.clients.aggregate([
+  {
+    $match: {'client_id': 1}
+  },
+  {
+    $lookup: {
+      from: "memberships",
+      localField: "client_id",
+      foreignField: "client_id",
+      as: "membership_data"
+  }
+}])
+
+
