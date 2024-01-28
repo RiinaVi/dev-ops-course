@@ -1,7 +1,9 @@
 ---
-- name: Webserver
+- name: Basic system and Webserver configuration
   hosts: all
   become: true
   gather_facts: true
   roles:
+    - install_soft
+    - user_config
     - web_server
