@@ -1,5 +1,0 @@
----
-# vars file for mysql
-mysql_root_user: myuser
-mysql_root_password: passpord
-mysql_db_name: myapp
