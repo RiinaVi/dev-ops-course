@@ -22,7 +22,7 @@
     src: files/.bashrc
     dest: "/home/{{ user_name }}/.bashrc"
 - name: Source .bashrc
-  shell: . .bashrc
+  ansible.builtin.shell: . .bashrc
   args:
     executable: /bin/bash
 
