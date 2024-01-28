@@ -1,8 +1,10 @@
 ---
-- name: Mysql server
+- name: Basic system and Mysql server configuration
   hosts: all
   become: true
   gather_facts: true
   roles:
+    - install_soft
+    - user_config
     - mysql_server
 
