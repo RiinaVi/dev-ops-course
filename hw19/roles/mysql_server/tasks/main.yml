@@ -19,17 +19,17 @@
     name: "{{ mysql_db_name }}"
 
 - name: Add config for external connection
-  template:
+  ansible.builtin.template:
     src: mysql.cnf
     dest: /etc/mysql/my.cnf
 
 - name: Add sample data to database
-  copy:
+  ansible.builtin.copy:
     src: files/dumpfilename.sql
     dest: /tmp/dump.sql
 
 - name: Insert sample data into database
-  mysql_db:
+  community.mysql.mysql_db:
     name: "{{ mysql_db_name }}"
     state: import
     target: /tmp/dump.sql

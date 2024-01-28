@@ -5,12 +5,12 @@
     state: present
 
 - name: Copy index.html to the Nginx directory
-  template:
+  ansible.builtin.template:
     src: files/index.html
     dest: /usr/share/nginx/html/
 
 - name: Copy the Nginx configuration file to the host
-  template:
+  ansible.builtin.template:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
 
