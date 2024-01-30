@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req: Request, res: Response) => {
   res.send(`
-        <h2>Welcome to the TypeScript Calculator! Changes 30.01 22:30</h2>
+        <h2>Welcome to the TypeScript Calculator! Changes 30.01 22:32</h2>
         <button onclick="window.location.href='/calculator'">Go to Calculator</button>
     `);
 });
