@@ -1,0 +1,20 @@
+- name: Install Nginx
+  ansible.builtin.apt:
+    update_cache: yes
+    name: nginx
+    state: present
+
+- name: Copy index.html to the Nginx directory
+  ansible.builtin.template:
+    src: files/index.html
+    dest: /usr/share/nginx/html/
+
+- name: Copy the Nginx configuration file to the host
+  ansible.builtin.template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Restart Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted

@@ -1,0 +1,8 @@
+---
+- name: Basic configuration
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - install_soft
+    - user_config

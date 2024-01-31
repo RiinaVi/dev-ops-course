@@ -1,0 +1,42 @@
+---
+- name: Install MySQL
+  ansible.builtin.apt:
+    update_cache: yes
+    name:
+      - mysql-server
+      - python3-mysqldb
+
+- name: "Create {{ mysql_root_user }} user"
+  community.mysql.mysql_user:
+    name: "{{ mysql_root_user }}"
+    host: "%"
+    password: "{{ mysql_root_password }}"
+    priv: "*.*:ALL"
+    column_case_sensitive: true
+
+- name: "Create database with name {{ mysql_db_name }}"
+  community.mysql.mysql_db:
+    name: "{{ mysql_db_name }}"
+
+- name: Add config for external connection
+  ansible.builtin.template:
+    src: mysql.cnf
+    dest: /etc/mysql/my.cnf
+
+- name: Add sample data to database
+  ansible.builtin.copy:
+    src: files/dumpfilename.sql
+    dest: /tmp/dump.sql
+
+- name: Insert sample data into database
+  community.mysql.mysql_db:
+    name: "{{ mysql_db_name }}"
+    state: import
+    target: /tmp/dump.sql
+    login_user: "{{ mysql_root_user }}"
+    login_password: "{{ mysql_root_password }}"
+
+- name: Restart MySQL
+  ansible.builtin.service:
+    name: mysql
+    state: restarted
