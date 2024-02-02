@@ -11,7 +11,7 @@ variable "subnet_id" {
   type = string
 }
 variable "security_groups_name" {
-  description = "Securoty Groups Name"
+  description = "Security Groups Name"
   type = string
 }
 variable "instance_name" {
