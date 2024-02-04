@@ -1,4 +1,6 @@
 <!-- BEGIN_TF_DOCS -->
+# Security Module
+
 ## Requirements
 
 No requirements.

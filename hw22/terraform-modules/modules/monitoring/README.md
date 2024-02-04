@@ -1,4 +1,6 @@
 <!-- BEGIN_TF_DOCS -->
+# Monitoring Module
+
 ## Requirements
 
 No requirements.
