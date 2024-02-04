@@ -8,6 +8,22 @@ terraform {
   }
 }
 
+data "aws_ami" "ubuntu_ami" {
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
+  filter {
+    name   = "name"
+    values = ["*ubuntu*"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+  most_recent = true
+}
+
 provider "aws" {
   region = "us-east-2"
 }
@@ -32,7 +48,7 @@ module "security" {
 
 module "jenkins" {
   source               = "./modules/server"
-  ami                  = "ami-0866a04d72a1f5479"
+  ami                  = data.aws_ami.ubuntu_ami.id
   instance_type        = "t2.micro"
   subnet_id            = module.network.public_subnets_ids[0]
   security_groups_name = module.security.sg_id
@@ -42,12 +58,12 @@ module "jenkins" {
 }
 
 module "monitoring" {
-  source = "./modules/monitoring"
-  ami    = "ami-0866a04d72a1f5479"
+  source               = "./modules/monitoring"
+  ami                  = data.aws_ami.ubuntu_ami.id
   instance_type        = "t2.micro"
   subnet_id            = module.network.public_subnets_ids[0]
   security_groups_name = module.security.sg_id
-  instance_name        = "jenkins-instance"
-  instance_env         = "jenkins"
+  instance_name        = "monitoring-instance"
+  instance_env         = "monitoring"
   instance_role        = "core"
 }
