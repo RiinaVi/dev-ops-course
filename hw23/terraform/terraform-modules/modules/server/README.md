@@ -20,6 +20,7 @@ No modules.
 | Name                                                                                                     | Description                        |
 |----------------------------------------------------------------------------------------------------------|------------------------------------|
 | [aws_instance.ec2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | Provides an EC2 instance resource. |
+| [aws_key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | Provides an EC2 key pair resource. A key pair is used to control login access to EC2 instances. |
 
 ## Inputs
 

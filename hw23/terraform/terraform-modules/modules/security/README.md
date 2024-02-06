@@ -23,13 +23,12 @@ No modules.
 
 ## Inputs
 
-| Name                                                            | Description                              | Type     | Default | Required |
-|-----------------------------------------------------------------|------------------------------------------|----------|---------|:--------:|
-| <a name="input_cidr_blocks"></a> [cidr\_blocks](./variables.tf) | The CIDR blocks for inbound traffic      | `string` | n/a     |   yes    |
-| <a name="input_from_port"></a> [from\_port](./variables.tf)     | The start range of the inbound port rule | `number` | n/a     |   yes    |
-| <a name="input_name_sg"></a> [name\_sg](./variables.tf)         | Name of the security group               | `string` | n/a     |   yes    |
-| <a name="input_to_port"></a> [to\_port](./variables.tf)         | The end range of the inbound port rule   | `number` | n/a     |   yes    |
-| <a name="input_vpc_id"></a> [vpc\_id](./variables.tf)           | Id of the VPC                            | `string` | n/a     |   yes    |
+| Name                                                                | Description                         | Type           | Default | Required |
+|---------------------------------------------------------------------|-------------------------------------|----------------|---------|:--------:|
+| <a name="input_cidr_blocks"></a> [cidr\_blocks](./variables.tf)     | The CIDR blocks for inbound traffic | `string`       | n/a     |   yes    |
+| <a name="input_ingress_ports"></a> [ingress\_ports](./variables.tf) | The list of ingress ports           | `list(number)` | n/a     |   yes    |
+| <a name="input_name_sg"></a> [name\_sg](./variables.tf)             | Name of the security group          | `string`       | n/a     |   yes    |
+| <a name="input_vpc_id"></a> [vpc\_id](./variables.tf)               | Id of the VPC                       | `string`       | n/a     |   yes    |
 
 ## Outputs
 
