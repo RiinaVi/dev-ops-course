@@ -41,8 +41,7 @@ module "security" {
   source      = "./modules/security"
   name_sg     = "public-sg"
   cidr_blocks = "0.0.0.0/0"
-  from_port   = 22
-  to_port     = 22
+  ingress_ports = [22, 8080]
   vpc_id      = module.network.vpc_id
 }
 
