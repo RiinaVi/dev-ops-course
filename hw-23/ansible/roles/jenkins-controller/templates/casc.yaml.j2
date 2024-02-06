@@ -1,0 +1,118 @@
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              id: "github-credentials"
+              password: "<Зашифроване значення Github Token>"
+              scope: GLOBAL
+              username: "Viktonaft"
+              description: "Access token for Github repository"
+          - basicSSHUserPrivateKey:
+              id: "ec2-key"
+              privateKeySource:
+                directEntry:
+                  privateKey: ${file:/var/lib/jenkins/ec2-key}
+              scope: GLOBAL
+              username: "ubuntu"
+              description: "SSH key for AWS EC2"
+          - string:
+              description: "AWS access Key ID"
+              id: "AWS_ACCESS_KEY_ID"
+              scope: GLOBAL
+              secret: "<Зашифроване значення AWS access Key ID>"
+          - string:
+              description: "AWS secret access key"
+              id: "AWS_SECRET_ACCESS_KEY"
+              scope: GLOBAL
+              secret: "<Зашифроване значення AWS access Key ID>"
+jenkins:
+  agentProtocols:
+    - "JNLP4-connect"
+    - "Ping"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  disabledAdministrativeMonitors:
+    - "hudson.util.DoubleLaunchChecker"
+  labelAtoms:
+    - name: "built-in"
+  markupFormatter: "plainText"
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  nodeMonitors:
+    - diskSpaceMonitor:
+        freeSpaceThreshold: "1GB"
+    - tmpSpace:
+        freeSpaceThreshold: "1GB"
+  numExecutors: 2
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+        - id: "admin"
+          name: "admin user"
+          properties:
+            - "myView"
+            - preferredProvider:
+                providerId: "default"
+            - "timezone"
+            - "experimentalFlags"
+            - mailer:
+                emailAddress: "keleberda16@gmail.com"
+            - "apiToken"
+        - id: "v_koval"
+          name: "VK"
+          properties:
+            - "apiToken"
+            - "myView"
+            - preferredProvider:
+                providerId: "default"
+            - "timezone"
+            - "experimentalFlags"
+            - mailer:
+                emailAddress: "vk@gmail.com"
+  slaveAgentPort: -1
+  updateCenter:
+    sites:
+      - id: "default"
+        url: "https://updates.jenkins.io/update-center.json"
+  views:
+    - all:
+        name: "all"
+  viewsTabBar: "standard"
+globalCredentialsConfiguration:
+  configuration:
+    providerFilter: "none"
+    typeFilter: "none"
+appearance:
+  prism:
+    theme: PRISM
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  gitHooks:
+    allowedOnAgents: false
+    allowedOnController: false
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "knownHostsFileVerificationStrategy"
+unclassified:
+
+jobs:
+  - file: /var/lib/jenkins/jobdsl/folders.groovy
+  - file: /var/lib/jenkins/jobdsl/pipelines.groovy

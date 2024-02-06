@@ -1,0 +1,15 @@
+---
+- hosts: jenkins_controller
+  become: true
+  roles:
+    - jenkins-controller
+
+# Example
+#  ansible-playbook jenkins-playbook.yml \
+#     -i inventory.ini \
+#     --extra-vars "jenkins_ip=<вкажіть IP>" \
+#     --diff --check
+
+# Useful tags:
+#   --tags "install_jenkins_plugins" - install latest version of the plugins declared in default/main.yml
+#   --tags "template_config_files" - templates all config files: casc.yml + jobDSL folders/pipelines
