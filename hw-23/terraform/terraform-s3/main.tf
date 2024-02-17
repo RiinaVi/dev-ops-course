@@ -23,7 +23,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encrypt" {
 }
 
 resource "aws_dynamodb_table" "dynamodb_lock" {
-  name = "state-lock"
+  name = "state-lock-1"
   read_capacity = 1
   write_capacity = 1
   billing_mode = "PROVISIONED"

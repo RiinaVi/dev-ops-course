@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket         = "rd-state-bucket-arina"
-    dynamodb_table = "state-lock"
+    dynamodb_table = "state-lock-1"
     key            = "terraform.tfstate"
     encrypt        = true
     region         = "us-east-2"
@@ -47,22 +47,11 @@ module "security" {
 
 module "jenkins" {
   source               = "./modules/server"
-  ami                  = data.aws_ami.ubuntu_ami.id
-  instance_type        = "t2.micro"
+  ami                  = "ami-05fb0b8c1424f266b"
+  instance_type        = "t2.small"
   subnet_id            = module.network.public_subnets_ids[0]
   security_groups_name = module.security.sg_id
   instance_name        = "jenkins-instance"
   instance_env         = "jenkins"
-  instance_role        = "core"
-}
-
-module "monitoring" {
-  source               = "./modules/monitoring"
-  ami                  = data.aws_ami.ubuntu_ami.id
-  instance_type        = "t2.micro"
-  subnet_id            = module.network.public_subnets_ids[0]
-  security_groups_name = module.security.sg_id
-  instance_name        = "monitoring-instance"
-  instance_env         = "monitoring"
   instance_role        = "core"
 }
