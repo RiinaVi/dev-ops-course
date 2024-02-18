@@ -2,18 +2,15 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'BRANCH_NAME', defaultValue: 'hw-23', description: 'Git branch to checkout')
-        choice(name: 'STAGE_TO_EXECUTE', choices: ['Checkout', 'Terraform Apply', 'Terraform Destroy'], description: 'Select stage to execute')
+        choice(name: 'STAGE_TO_EXECUTE', choices: ['Apply', 'Destroy'], description: 'Select action')
     }
 
     stages {
         stage('Checkout') {
-            when {
-                expression { params.STAGE_TO_EXECUTE == 'Checkout' }
-            }
+
             steps {
                 checkout([$class: 'GitSCM',
-                          branches: [[name: '*/$BRANCH_NAME']],
+                          branches: [[name: '*/hw-23']],
                           userRemoteConfigs: [[url: 'git@github.com:RiinaVi/dev-ops-course.git',
                                                credentialsId: 'github-credentials']]])
             }
