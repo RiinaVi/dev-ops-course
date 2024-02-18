@@ -18,7 +18,7 @@ pipeline {
 
         stage('Terraform Apply') {
             when {
-                expression { params.STAGE_TO_EXECUTE == 'Terraform Apply' }
+                expression { params.STAGE_TO_EXECUTE == 'Apply' }
             }
             steps {
                 dir('hw-23/terraform/terraform-modules') {
@@ -32,7 +32,7 @@ pipeline {
 
         stage('Terraform Destroy') {
             when {
-                expression { params.STAGE_TO_EXECUTE == 'Terraform Destroy' }
+                expression { params.STAGE_TO_EXECUTE == 'Destroy' }
             }
             steps {
                 dir('application/terraform-app') {
