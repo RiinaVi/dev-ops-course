@@ -22,12 +22,7 @@ pipeline {
             }
             steps {
                 dir('hw-23/terraform/terraform-modules') {
-                    withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                         credentialsId: '',
-                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
-                     ]]) {
+                    withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
                         sh 'terraform init'
                         sh 'terraform apply -auto-approve'
                     }
