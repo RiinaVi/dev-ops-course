@@ -11,7 +11,7 @@ pipeline {
                 checkout([$class: 'GitSCM',
                           branches: [[name: '*/$BRANCH_NAME']],
                           userRemoteConfigs: [[url: 'https://github.com/RiinaVi/dev-ops-course.git',
-                                               credentialsId: 'git-credentials']]])
+                                               credentialsId: 'github-credentials']]])
             }
         }
 
