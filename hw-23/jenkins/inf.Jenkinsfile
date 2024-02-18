@@ -22,7 +22,12 @@ pipeline {
             }
             steps {
                 dir('hw-23/terraform/terraform-modules') {
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'ec2-key']]) {
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                         credentialsId: '',
+                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                     ]]) {
                         sh 'terraform init'
                         sh 'terraform apply -auto-approve'
                     }
@@ -36,7 +41,12 @@ pipeline {
             }
             steps {
                 dir('application/terraform-app') {
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'ec2-key']]) {
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                         credentialsId: '',
+                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                     ]]) {
                         sh 'terraform destroy -auto-approve'
                     }
                 }
