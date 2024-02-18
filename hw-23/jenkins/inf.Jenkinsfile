@@ -24,7 +24,7 @@ pipeline {
                 dir('hw-23/terraform/terraform-modules') {
                     withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
                         sh 'terraform init'
-                        sh 'terraform apply -auto-approve'
+                        sh 'terraform apply -auto-approve -lock=false'
                     }
                 }
             }
@@ -42,7 +42,7 @@ pipeline {
                          credentialsId: '',
                          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
                      ]]) {
-                        sh 'terraform destroy -auto-approve'
+                        sh 'terraform destroy -auto-approve -lock=false'
                     }
                 }
             }
