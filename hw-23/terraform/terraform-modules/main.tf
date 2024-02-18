@@ -48,7 +48,7 @@ module "security" {
 module "jenkins" {
   source               = "./modules/server"
   ami                  = "ami-05fb0b8c1424f266b"
-  instance_type        = "t2.small"
+  instance_type        = "t3.medium"
   subnet_id            = module.network.public_subnets_ids[0]
   security_groups_name = module.security.sg_id
   instance_name        = "jenkins-instance"

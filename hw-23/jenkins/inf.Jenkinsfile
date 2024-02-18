@@ -14,7 +14,7 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM',
                           branches: [[name: '*/$BRANCH_NAME']],
-                          userRemoteConfigs: [[url: 'https://github.com/RiinaVi/dev-ops-course.git',
+                          userRemoteConfigs: [[url: 'git@github.com:RiinaVi/dev-ops-course.git',
                                                credentialsId: 'github-credentials']]])
             }
         }
@@ -24,7 +24,7 @@ pipeline {
                 expression { params.STAGE_TO_EXECUTE == 'Terraform Apply' }
             }
             steps {
-                dir('application/terraform-app') {
+                dir('hw-23/terraform/terraform-modules') {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred']]) {
                         sh 'terraform init'
                         sh 'terraform apply -auto-approve'
