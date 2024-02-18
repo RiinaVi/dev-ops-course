@@ -1,4 +1,4 @@
-resource "aws_security_group" "sg" {
+resource "aws_security_group" "app_sg" {
   name = var.name_sg
   description = "Allow inbound traffic"
   vpc_id = var.vpc_id
