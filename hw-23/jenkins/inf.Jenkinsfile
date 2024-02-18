@@ -21,7 +21,7 @@ pipeline {
                 expression { params.STAGE_TO_EXECUTE == 'Apply' }
             }
             steps {
-                dir('hw-23/terraform/terraform-modules') {
+                dir('hw-23/terraform-app/terraform-modules') {
                     withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
                         sh 'terraform init'
                         sh 'terraform apply -auto-approve -lock=false'
@@ -35,13 +35,8 @@ pipeline {
                 expression { params.STAGE_TO_EXECUTE == 'Destroy' }
             }
             steps {
-                dir('application/terraform-app') {
-                    withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                         credentialsId: '',
-                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
-                     ]]) {
+                dir('hw-23/terraform-app/terraform-modules') {
+                     withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
                         sh 'terraform destroy -auto-approve -lock=false'
                     }
                 }
