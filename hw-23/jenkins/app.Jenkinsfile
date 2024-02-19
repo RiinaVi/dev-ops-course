@@ -7,15 +7,11 @@ pipeline {
         DEST_FOLDER = '/home/ubuntu/app'
     }
 
-    parameters {
-        string(name: 'BRANCH_NAME', defaultValue: 'hw-23', description: 'Git branch to checkout')
-    }
-
     stages {
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM',
-                          branches: [[name: '*/$BRANCH_NAME']],
+                          branches: [[name: '*/hw-23']],
                           userRemoteConfigs: [[url: 'git@github.com:RiinaVi/dev-ops-course.git',
                                                credentialsId: 'github-credentials']]])
             }
@@ -40,7 +36,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sshagent(credentials: ['ec2-key']) {
+                    withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
                         script {
                             sh "ssh -o StrictHostKeyChecking=no ${USER}@${REMOTE_HOST} 'mkdir -p ${DEST_FOLDER}'"
                             sh "scp -o StrictHostKeyChecking=no -r app/build/ app/package.json ${USER}@${REMOTE_HOST}:${DEST_FOLDER}"

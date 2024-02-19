@@ -5,14 +5,14 @@ pipelineJob('infrastructure/terraform') {
             scm {
                 git {
                     remote {
-                        url('<Вкажіть git URL>')
-                        credentials('my-credentials')
+                        url('git@github.com:RiinaVi/dev-ops-course.git')
+                        credentials('github-credentials')
                     }
-                    branch('*/master')
+                    branch('*/hw-23')
                     extensions { }
                 }
             }
-            scriptPath('<Вкажіть шлях до Jenkinsfile всередині Git>')
+            scriptPath('hw-23/jenkins/inf.Jenkinsfile')
             lightweight(true)
         }
     }
@@ -24,14 +24,14 @@ pipelineJob('ansible/ansible') {
             scm {
                 git {
                     remote {
-                        url('<Вкажіть git URL>')
-                        credentials('my-credentials2')
+                        url('git@github.com:RiinaVi/dev-ops-course.git')
+                        credentials('github-credentials')
                     }
-                    branch('*/master')
+                    branch('*/hw-23')
                     extensions { }
                 }
             }
-            scriptPath('<Вкажіть шлях до Jenkinsfile всередині Git>')
+            scriptPath('hw-23/jenkins/config.Jenkinsfile')
             lightweight(true)
         }
     }
@@ -43,14 +43,14 @@ pipelineJob('application/nodejs') {
             scm {
                 git {
                     remote {
-                        url('<Вкажіть git URL>')
-                        credentials('my-credentials3')
+                        url('git@github.com:RiinaVi/dev-ops-course.git')
+                        credentials('github-credentials')
                     }
-                    branch('*/master')
+                    branch('*/hw-23')
                     extensions { }
                 }
             }
-            scriptPath('<Вкажіть шлях до Jenkinsfile всередині Git>')
+            scriptPath('hw-23/jenkins/app.Jenkinsfile')
             lightweight(true)
         }
     }

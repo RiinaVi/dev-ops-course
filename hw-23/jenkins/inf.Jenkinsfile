@@ -24,7 +24,8 @@ pipeline {
                 dir('hw-23/terraform-app/terraform-modules') {
                     withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
                         sh 'terraform init'
-                        sh 'terraform apply -auto-approve -lock=false'
+                        sh 'terraform workspace select app || terraform workspace new app'
+                        sh 'terraform plan -lock=false'
                     }
                 }
             }
