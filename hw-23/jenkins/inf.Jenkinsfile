@@ -25,7 +25,7 @@ pipeline {
                     withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
                         sh 'terraform init'
                         sh 'terraform workspace select app || terraform workspace new app'
-                        sh 'terraform plan -lock=false'
+                        sh 'terraform apply -lock=false'
                     }
                 }
             }
