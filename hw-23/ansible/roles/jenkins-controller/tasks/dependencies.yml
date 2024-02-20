@@ -9,8 +9,16 @@
       - default-jre
       - gnupg2
       - git
+      - ansible
+      - nodejs
+      - npm
     state: present
     update_cache: true
+
+- name: Install terraform with option --classic
+  community.general.snap:
+    name: terraform
+    classic: true
 
 - name: Add Jenkins apt repository key
   ansible.builtin.get_url:

@@ -1,3 +1,3 @@
-output "app" {
-  value = module.app
+output "server_ip" {
+  value = module.app.server_ip
 }

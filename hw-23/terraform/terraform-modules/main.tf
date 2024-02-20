@@ -55,3 +55,8 @@ module "jenkins" {
   instance_env         = "jenkins"
   instance_role        = "core"
 }
+
+resource "local_file" "jenkins_ip" {
+  content  = module.jenkins.jenkins_ip
+  filename = "jenkins_ip.txt"
+}

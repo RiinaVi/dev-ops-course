@@ -55,3 +55,8 @@ module "app" {
   instance_env         = "app"
   instance_role        = "app"
 }
+
+resource "local_file" "server_ip" {
+  content  = module.app.server_ip
+  filename = "server_ip.txt"
+}

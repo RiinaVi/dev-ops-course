@@ -31,6 +31,22 @@ pipeline {
             }
         }
 
+        stage('Trigger Ansible Pipeline') {
+            when {
+                expression { params.STAGE_TO_EXECUTE == 'Apply' }
+            }
+
+            steps {
+                dir('hw-23/terraform-app/terraform-modules') {
+                    build job: 'ansible/ansible', parameters: [
+                        string(name: 'SERVER_IP', value: $(<server_ip.txt ))
+                    ]
+                }
+
+
+            }
+        }
+
         stage('Terraform Destroy') {
             when {
                 expression { params.STAGE_TO_EXECUTE == 'Destroy' }

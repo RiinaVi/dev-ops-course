@@ -7,7 +7,7 @@
     mode: "0644"
   loop:
     - { src: "casc.yaml.j2", dest: "{{ jenkins_home }}/casc.yaml" }
-    - { src: "ec2-key.j2", dest: "{{ jenkins_home }}/ec2-key" }
+    - { src: "github-ssh.j2", dest: "{{ jenkins_home }}/github-ssh" }
   tags:
     - template_config_files
 
@@ -36,7 +36,6 @@
   register: jenkins_post_init_prefix
 
 - name: Immediately restart Jenkins on init config changes.
-  ansible.builtin.systemd:
+  ansible.builtin.service:
     name: jenkins
     state: restarted
-    daemon_reload: true

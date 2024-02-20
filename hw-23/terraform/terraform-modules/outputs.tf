@@ -1,3 +1,3 @@
-output "jenkins" {
-  value = module.jenkins
+output "jenkins_ip" {
+  value = module.jenkins.jenkins_ip
 }

@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: node-application
   become: true
   roles:
     - node-application

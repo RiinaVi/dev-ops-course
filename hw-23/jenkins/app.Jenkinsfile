@@ -1,11 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        USER = 'ubuntu'
-        REMOTE_HOST = '3.147.57.250'
-        DEST_FOLDER = '/home/ubuntu/app'
-    }
+    parameters {
+            string(name: 'USER', defaultValue: 'ubuntu',  description: 'Username')
+            string(name: 'SERVER_IP', defaultValue: '',  description: 'Server IP address')
+            string(name: 'DESTINATION_PATH', defaultValue: '/home/ubuntu/app',  description: 'Server destination path')
+        }
 
     stages {
         stage('Checkout') {
