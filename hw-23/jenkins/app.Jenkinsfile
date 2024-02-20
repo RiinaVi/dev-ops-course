@@ -28,7 +28,7 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts artifacts: 'app/build/'
+                    archiveArtifacts artifacts: 'hw-23/app/build/'
                 }
             }
         }
