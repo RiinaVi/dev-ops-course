@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 dir('hw-23/terraform-app/terraform-modules') {
-                    withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+                    withAWS(credentials: 'aws-credentials') {
                         sh 'terraform init'
                         sh 'terraform workspace select app || terraform workspace new app'
                         sh 'terraform apply -auto-approve -lock=false'
@@ -53,7 +53,7 @@ pipeline {
             }
             steps {
                 dir('hw-23/terraform-app/terraform-modules') {
-                     withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+                     withAWS(credentials: 'aws-credentials') {
                         sh 'terraform destroy -auto-approve -lock=false'
                     }
                 }

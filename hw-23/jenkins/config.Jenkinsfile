@@ -18,7 +18,7 @@ pipeline {
         stage('Node.js configuration') {
             steps {
                 dir('hw-23/ansible') {
-                     withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+                     withAWS(credentials: 'aws-credentials') {
                         sh 'ansible-playbook -i inventory.ini node-application-playbook.yml --extra-vars "server_ip=$SERVER_IP"'
                     }
                 }

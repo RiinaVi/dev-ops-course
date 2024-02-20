@@ -36,7 +36,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    withAWS(credentials: 'aws-credentials', region: 'us-east-2') {
+                    withAWS(credentials: 'aws-credentials') {
                         script {
                             sh "ssh -o StrictHostKeyChecking=no ${USER}@${REMOTE_HOST} 'mkdir -p ${DEST_FOLDER}'"
                             sh "scp -o StrictHostKeyChecking=no -r app/build/ app/package.json ${USER}@${REMOTE_HOST}:${DEST_FOLDER}"
