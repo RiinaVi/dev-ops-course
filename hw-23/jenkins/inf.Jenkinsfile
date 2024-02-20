@@ -39,11 +39,8 @@ pipeline {
             steps {
                 dir('hw-23/terraform-app/terraform-modules') {
                     withAWS(credentials: 'aws-credentials') {
-//                         sh 'terraform output server_ip'
-//                         ip = sh(returnStdout: true, script: "terraform output server_ip").trim()
-                        sh 'echo $(sh(returnStdout: true, script: "terraform output server_ip").trim())'
                         build job: 'ansible/ansible', parameters: [
-                            string(name: 'SERVER_IP', value: sh(returnStdout: true, script: "terraform output server_ip").trim())
+                            string(name: 'SERVER_IP', value: sh(returnStdout: true, script: "terraform output server_ip"))
                         ]
                     }
                 }
