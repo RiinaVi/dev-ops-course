@@ -30,13 +30,9 @@ pipeline {
         stage('Trigger Application Pipeline') {
 
             steps {
-                dir('hw-23/terraform-app/terraform-modules') {
-                    build job: 'application/nodejs', parameters: [
-                        string(name: 'SERVER_IP', value: '$SERVER_IP')
-                    ]
-                }
-
-
+                build job: 'application/nodejs', parameters: [
+                    string(name: 'SERVER_IP', value: '$SERVER_IP')
+                ]
             }
         }
     }
