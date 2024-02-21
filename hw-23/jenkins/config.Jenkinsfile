@@ -18,9 +18,20 @@ pipeline {
         stage('Node.js configuration') {
             steps {
                 dir('hw-23/ansible') {
-                    sshagent(credentials: ['ec2-key']) {
-                        sh "ansible-playbook -i inventory.ini node-application-playbook.yml --extra-vars \"server_ip=${SERVER_IP}\""
+                ansiblePlaybook('node-application-playbook.yml') {
+                        inventoryPath('inventory.ini')
+                        ansibleName("${SERVER_IP}")
+                        credentialsId('ec2-key')
+                        become(true)
+                        becomeUser("ubuntu")
+                        checkMode(false)
+                        extraVars {
+                            extraVar("server_ip", "${SERVER_IP}", false)
+                        }
                     }
+//                     sshagent(credentials: ['ec2-key']) {
+//                         sh "ansible-playbook -i inventory.ini node-application-playbook.yml --extra-vars \"server_ip=${SERVER_IP}\""
+//                     }
                 }
             }
         }
