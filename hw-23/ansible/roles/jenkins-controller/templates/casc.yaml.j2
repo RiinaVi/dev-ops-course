@@ -2,30 +2,28 @@ credentials:
   system:
     domainCredentials:
       - credentials:
-          - usernamePassword:
-              id: "github-credentials"
-              password: "<Зашифроване значення Github Token>"
-              scope: GLOBAL
-              username: "Viktonaft"
-              description: "Access token for Github repository"
           - basicSSHUserPrivateKey:
-              id: "ec2-key"
+              id: "github-credentials"
+              scope: GLOBAL
+              username: "RiinaVi"
+              description: "Access token for Github repository"
               privateKeySource:
                 directEntry:
-                  privateKey: ${file:/var/lib/jenkins/ec2-key}
+                  privateKey: ${file:/var/lib/jenkins/github-ssh}
+          - basicSSHUserPrivateKey:
+                id: "ec2-key"
+                scope: GLOBAL
+                username: "ubuntu"
+                description: "Access token for Github repository"
+                privateKeySource:
+                  directEntry:
+                    privateKey: ${file:/var/lib/jenkins/ec2-key}
+          - aws:
+              accessKey: "AKIA44TYA2BXLLJW2ZCQ"
+              description: "AWS credentials"
+              id: "aws-credentials"
               scope: GLOBAL
-              username: "ubuntu"
-              description: "SSH key for AWS EC2"
-          - string:
-              description: "AWS access Key ID"
-              id: "AWS_ACCESS_KEY_ID"
-              scope: GLOBAL
-              secret: "<Зашифроване значення AWS access Key ID>"
-          - string:
-              description: "AWS secret access key"
-              id: "AWS_SECRET_ACCESS_KEY"
-              scope: GLOBAL
-              secret: "<Зашифроване значення AWS access Key ID>"
+              secretKey: ${file:/var/lib/jenkins/aws-key}
 jenkins:
   agentProtocols:
     - "JNLP4-connect"
@@ -72,10 +70,10 @@ jenkins:
             - "timezone"
             - "experimentalFlags"
             - mailer:
-                emailAddress: "keleberda16@gmail.com"
+                emailAddress: "riinavi86@gmail.com"
             - "apiToken"
-        - id: "v_koval"
-          name: "VK"
+        - id: "riinavi"
+          name: "riinavi"
           properties:
             - "apiToken"
             - "myView"
@@ -84,7 +82,7 @@ jenkins:
             - "timezone"
             - "experimentalFlags"
             - mailer:
-                emailAddress: "vk@gmail.com"
+                emailAddress: "riinavi86@gmail.com"
   slaveAgentPort: -1
   updateCenter:
     sites:
@@ -110,9 +108,8 @@ security:
     allowedOnAgents: false
     allowedOnController: false
   gitHostKeyVerificationConfiguration:
-    sshHostKeyVerificationStrategy: "knownHostsFileVerificationStrategy"
+    sshHostKeyVerificationStrategy: "acceptFirstConnectionStrategy"
 unclassified:
-
 jobs:
   - file: /var/lib/jenkins/jobdsl/folders.groovy
   - file: /var/lib/jenkins/jobdsl/pipelines.groovy
