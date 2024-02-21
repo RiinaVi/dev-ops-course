@@ -29,7 +29,7 @@ pipeline {
 
             steps {
                 build job: 'application/nodejs', parameters: [
-                    string(name: 'SERVER_IP', value: '$SERVER_IP')
+                    string(name: 'SERVER_IP', value: '${SERVER_IP}')
                 ]
             }
         }
