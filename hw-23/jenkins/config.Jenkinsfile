@@ -19,7 +19,7 @@ pipeline {
             steps {
                 dir('hw-23/ansible') {
                     sshagent(credentials: ['ec2-key']) {
-                        sh "ansible-playbook -i inventory.ini node-application-playbook.yml --extra-vars server_ip=${SERVER_IP}"
+                        sh "ansible-playbook -i inventory.ini node-application-playbook.yml  -e 'server_ip=${SERVER_IP}' "
                     }
                 }
             }
