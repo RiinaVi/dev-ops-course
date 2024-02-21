@@ -10,8 +10,6 @@
       - gnupg2
       - git
       - ansible
-      - nodejs
-      - npm
     state: present
     update_cache: true
 

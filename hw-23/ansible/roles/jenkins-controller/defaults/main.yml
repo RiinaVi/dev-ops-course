@@ -21,8 +21,8 @@ jenkins_process_user: jenkins
 jenkins_process_group: "{{ jenkins_process_user }}"
 
 # Для зберігання значення паролю і юзеру винесіть їх у окремий defaults файл, та зашифруйте перед додаванням в Git
-jenkins_admin_username:
-jenkins_admin_password:
+jenkins_admin_username: admin
+jenkins_admin_password: {{PASSWORD}}
 
 jenkins_connection_retries: 60
 jenkins_connection_delay: 5
@@ -65,6 +65,7 @@ jenkins_plugins:
   - name: pipeline-model-api
   - name: pipeline-model-extensions
   - name: pipeline-groovy-lib
+  - name: pipeline-aws
   - name: pipeline-stage-step
   - name: pipeline-input-step
   - name: pipeline-stage-tags-metadata
