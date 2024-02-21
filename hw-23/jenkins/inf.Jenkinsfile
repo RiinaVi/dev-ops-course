@@ -24,9 +24,7 @@ pipeline {
                 dir('hw-23/terraform-app/terraform-modules') {
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
-                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                         credentialsId: '',
-                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                         credentialsId: 'ec2-key',
                      ]]) {
                         sh 'terraform init'
                         sh 'terraform workspace select app || terraform workspace new app'
@@ -45,9 +43,7 @@ pipeline {
                 dir('hw-23/terraform-app/terraform-modules') {
                    withCredentials([[
                        $class: 'AmazonWebServicesCredentialsBinding',
-                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        credentialsId: '',
-                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                        credentialsId: 'ec2-key',
                    ]]) {
                         build job: 'ansible/ansible', parameters: [
                             string(name: 'SERVER_IP', value: sh(returnStdout: true, script: "terraform output server_ip"))
@@ -67,9 +63,7 @@ pipeline {
                 dir('hw-23/terraform-app/terraform-modules') {
                      withCredentials([[
                          $class: 'AmazonWebServicesCredentialsBinding',
-                          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                          credentialsId: '',
-                          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                          credentialsId: 'ec2-key',
                      ]]) {
                         sh 'terraform destroy -auto-approve -lock=false'
                     }
