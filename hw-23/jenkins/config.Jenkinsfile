@@ -18,9 +18,9 @@ pipeline {
         stage('Node.js configuration') {
             steps {
                 dir('hw-23/ansible') {
-                ansiblePlaybook('node-application-playbook.yml') {
+                    ansiblePlaybook('node-application-playbook.yml') {
                         inventoryPath('inventory.ini')
-                        ansibleName("${SERVER_IP}")
+//                         ansibleName("${SERVER_IP}")
                         credentialsId('ec2-key')
                         become(true)
                         becomeUser("ubuntu")
