@@ -38,9 +38,9 @@ pipeline {
                 script {
                     withAWS(credentials: 'aws-credentials') {
                         script {
-                            sh "ssh -o StrictHostKeyChecking=no ${USER}@${REMOTE_HOST} 'mkdir -p ${DEST_FOLDER}'"
-                            sh "scp -o StrictHostKeyChecking=no -r app/build/ app/package.json ${USER}@${REMOTE_HOST}:${DEST_FOLDER}"
-                            sh "ssh -o StrictHostKeyChecking=no ${USER}@${REMOTE_HOST} 'cd ${DEST_FOLDER} && npm install && sudo npm install forever -g && forever start build/index.js'"
+                            sh "ssh -o StrictHostKeyChecking=no ${USER}@${SERVER_IP} 'mkdir -p ${DESTINATION_PATH}'"
+                            sh "scp -o StrictHostKeyChecking=no -r app/build/ app/package.json ${USER}@${SERVER_IP}:${DESTINATION_PATH}"
+                            sh "ssh -o StrictHostKeyChecking=no ${USER}@${SERVER_IP} 'cd ${DESTINATION_PATH} && npm install && sudo npm install forever -g && forever start build/index.js'"
                         }
                     }
                 }
