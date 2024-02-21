@@ -30,7 +30,7 @@ pipeline {
             steps {
                 build job: 'application/nodejs', parameters: [
                     string(name: 'SERVER_IP', value: "${SERVER_IP}")
-                ]
+                ], wait: false
             }
         }
     }
