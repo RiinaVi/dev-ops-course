@@ -8,6 +8,8 @@
   loop:
     - { src: "casc.yaml.j2", dest: "{{ jenkins_home }}/casc.yaml" }
     - { src: "github-ssh.j2", dest: "{{ jenkins_home }}/github-ssh" }
+    - { src: "ec2-key.j2", dest: "{{ jenkins_home }}/ec2-key" }
+    - { src: "aws-key.j2", dest: "{{ jenkins_home }}/aws-key" }
   tags:
     - template_config_files
 
