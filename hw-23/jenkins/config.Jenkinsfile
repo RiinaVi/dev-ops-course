@@ -19,7 +19,7 @@ pipeline {
             steps {
                 dir('hw-23/ansible') {
                      withAWS(credentials: 'aws-credentials') {
-                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'ec2-key']]) {
+                        withCredentials([sshUserPrivateKey(credentialsId: 'ec2-key')]) {
                             sh 'ansible-playbook -i inventory.ini node-application-playbook.yml --extra-vars "server_ip=$SERVER_IP"'
                         }
                     }
