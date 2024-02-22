@@ -11,7 +11,7 @@ jenkins_package_state: present
 jenkins_home: /var/lib/jenkins
 jenkins_rb_lib: nfds
 
-jenkins_hostname: "{{ jenkins_ip }}"
+jenkins_hostname: "{{ ansible_host }}"
 jenkins_port: 8080
 
 jenkins_init_folder: "/etc/systemd/system/jenkins.service.d"
@@ -52,6 +52,8 @@ jenkins_init_changes:
     value: "{{ jenkins_url_prefix }}"
   - option: "JENKINS_PORT"
     value: "{{ jenkins_http_port }}"
+  - option: "CASC_JENKINS_CONFIG"
+    value: "/var/lib/jenkins/casc.yaml"
 
 jenkins_post_init_changes:
   - option: "CASC_JENKINS_CONFIG"
