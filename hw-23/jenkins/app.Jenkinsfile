@@ -36,10 +36,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sshagent(credentials: ['ec2-key']) {
+                    withCredentials([sshUserPrivateKey(credentialsId: "ec2-key", keyFileVariable: 'keyfile')]) {
                         script {
-                            sh "scp -o StrictHostKeyChecking=no -r hw-23/app/build/ hw-23/app/package.json ${USER}@${SERVER_IP}:/"
-                            sh "ssh -o StrictHostKeyChecking=no ${USER}@${SERVER_IP} 'npm install && sudo npm install forever -g && forever start build/index.js'"
+                            sh "scp -i ${keyfile} -r hw-23/app/build/ hw-23/app/package.json ${USER}@${SERVER_IP}:/"
+                            sh "ssh -i ${keyfile} ${USER}@${SERVER_IP} 'npm install && sudo npm install forever -g && forever start build/index.js'"
                         }
                     }
                 }
