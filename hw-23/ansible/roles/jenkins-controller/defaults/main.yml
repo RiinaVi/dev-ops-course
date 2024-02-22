@@ -20,10 +20,6 @@ jenkins_init_file: "{{ jenkins_init_folder }}/override.conf"
 jenkins_process_user: jenkins
 jenkins_process_group: "{{ jenkins_process_user }}"
 
-# Для зберігання значення паролю і юзеру винесіть їх у окремий defaults файл, та зашифруйте перед додаванням в Git
-jenkins_admin_username: admin
-jenkins_admin_password: {{PASSWORD}}
-
 jenkins_connection_retries: 60
 jenkins_connection_delay: 5
 
