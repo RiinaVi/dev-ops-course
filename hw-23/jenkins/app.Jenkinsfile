@@ -35,13 +35,11 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                script {
-                    withCredentials([sshUserPrivateKey(credentialsId: "ec2-key", keyFileVariable: 'keyfile')]) {
-                        script {
-                            sh "scp -i ${keyfile} -r hw-23/app/build/ hw-23/app/package.json ${USER}@${SERVER_IP}:/"
-                            sh "ssh -i ${keyfile} ${USER}@${SERVER_IP} 'npm install && sudo npm install forever -g && forever start build/index.js'"
-                        }
-                    }
+                withCredentials([sshUserPrivateKey(credentialsId: "ec2-key", keyFileVariable: 'keyfile')]) {
+                 sh "ssh-keyscan -t rsa ${SERVER_IP} >> ~/.ssh/known_hosts"
+                 sh "scp -i ${keyfile} -r ./build ${USER}@${SERVER_IP}:./build"
+                 sh "scp -i ${keyfile} -r ./package.json ${USER}@${SERVER_IP}:./package.json"
+                 sh "ssh -i ${keyfile} ${USER}@${SERVER_IP} 'npm install && sudo npm install forever -g && forever start build/index.js'"
                 }
             }
         }
