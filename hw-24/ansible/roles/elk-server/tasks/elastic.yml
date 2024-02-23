@@ -1,0 +1,31 @@
+- name: Import public GPG key
+  ansible.builtin.apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add ES repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+    state: present
+    update_cache: yes
+
+- name: Install elasticsearch
+  ansible.builtin.apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: Configure elasticsearch
+  ansible.builtin.template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: elasticsearch
+    group: elasticsearch
+    mode: 0644
+  notify: restart elasticsearch
+
+- name: Enable and start elasticsearch
+  ansible.builtin.systemd:
+    name: elasticsearch
+    state: started
+    enabled: yes

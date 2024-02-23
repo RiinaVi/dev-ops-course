@@ -1,0 +1,12 @@
+cluster.name: {{ cluster_name }}
+network.host: {{ server_host }}
+node.name: "{{ ansible_hostname }}"
+http.port: {{ es_port }}
+
+path.data: {{ path_data }}
+path.logs: {{ path_logs }}
+
+discovery.type: {{ discovery_type }}
+
+xpack.security.transport.ssl.enabled: {{ transport_ssl_enabled }}
+xpack.security.http.ssl.enabled: {{ http_ssl_enabled }}

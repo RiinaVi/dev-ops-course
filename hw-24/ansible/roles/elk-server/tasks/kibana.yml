@@ -1,0 +1,17 @@
+---
+- name: Install the Kibana Debian package
+  ansible.builtin.apt:
+    update_cache: true
+    name: kibana
+    state: present
+
+- name: Enable Kibana
+  ansible.builtin.systemd:
+    name: kibana
+    enabled: true
+
+- name: Configuring Kibana
+  ansible.builtin.template:
+    src: kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+  notify: Restart Kibana

@@ -1,0 +1,13 @@
+---
+- name: Install and configure ElasticSearch
+  include_tasks: elastic.yml
+
+- name: Install and configure Kibana
+  include_tasks: kibana.yml
+
+- name: Install and configure Logstash
+  include_tasks: logstash.yml
+
+#- name: Include secrets
+#  include_vars:
+#    file: secrets.yml

@@ -1,0 +1,5 @@
+- name: Install and configure ELK stack
+  hosts: monitoring
+  become: true
+  roles:
+    - elk-server
