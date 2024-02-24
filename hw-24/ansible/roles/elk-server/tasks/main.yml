@@ -7,7 +7,3 @@
 
 - name: Install and configure Logstash
   include_tasks: logstash.yml
-
-#- name: Include secrets
-#  include_vars:
-#    file: secrets.yml
