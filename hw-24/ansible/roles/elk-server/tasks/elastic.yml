@@ -22,7 +22,7 @@
     owner: elasticsearch
     group: elasticsearch
     mode: 0644
-  notify: restart elasticsearch
+  notify: Restart Elasticsearch
 
 - name: Enable and start elasticsearch
   ansible.builtin.systemd:
