@@ -1,0 +1,15 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/*.log
+
+output.logstash:
+  hosts: ["localhost:{{ beats_port }}"]
+
+filebeat.config.modules:
+  enabled: true
+  reload.enabled: false
+  path: /modules.d/*.yml
+
+setup.ilm.overwrite: true

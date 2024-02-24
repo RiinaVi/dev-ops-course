@@ -1,0 +1,118 @@
+---
+- name: Import public GPG key
+  ansible.builtin.apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add Elastic ES repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+    state: present
+    update_cache: yes
+
+- name: Install elasticsearch
+  ansible.builtin.apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: Configure elasticsearch
+  ansible.builtin.template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: elasticsearch
+    group: elasticsearch
+    mode: 0644
+
+- name: Enable and Start elasticsearch
+  ansible.builtin.systemd:
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+- name: Install Kibana
+  ansible.builtin.apt:
+    name: kibana
+    state: present
+    update_cache: yes
+
+- name: Configure Kibana
+  ansible.builtin.template:
+    src: kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+    mode: 0644
+
+- name: Enable and start Kibana
+  ansible.builtin.systemd:
+    name: kibana
+    state: started
+    enabled: yes
+
+- name: Install logstash
+  ansible.builtin.apt:
+    name: logstash
+    state: present
+
+- name: Configure logstash
+  ansible.builtin.template:
+    src: beats.conf.j2
+    dest: /etc/logstash/conf.d/beats.conf
+    mode: 0644
+
+- name: Enable and start logstash
+  ansible.builtin.systemd:
+    name: logstash
+    state: started
+    enabled: yes
+
+---
+
+- name: Install filebeat
+  ansible.builtin.apt:
+    name: filebeat
+    state: present
+
+- name: Configure filebeat
+  ansible.builtin.template:
+    src: filebeat.yml.j2
+    dest: filebeat.yml
+    mode: 0644
+
+- name: Enable and start filebeat
+  ansible.builtin.systemd:
+    name: filebeat
+    state: started
+    enabled: yes
+
+- name: Install metricbeat
+  ansible.builtin.apt:
+    name: metricbeat
+    state: present
+
+- name: Configure metricbeat
+  ansible.builtin.template:
+    src: metricbeat.yml.j2
+    dest: metricbeat.yml
+    mode: 0644
+
+- name: Enable and start metricbeat
+  ansible.builtin.systemd:
+    name: metricbeat
+    state: started
+    enabled: yes
+
+- name: Enable filebeat modules
+  shell: "filebeat modules enable system"
+
+- name: Enable metricbeat modules
+  shell: "metricbeat modules enable logstash"
+
+- name: Load the index template to ES and dashboards to Kibana
+  shell: |
+    filebeat setup --index-management -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=["localhost:9200"]'
+    filebeat setup -E 'output.logstash.enabled=false' -E 'output.elasticsearch.hosts=["localhost:9200"]' -E setup.kibana.host=localhost:5601
+
+- name: Load the dashboards to ELK stack
+  shell: |
+    metricbeat setup --index-management -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=["localhost:9200"]'
+    metricbeat setup -E 'output.logstash.enabled=false' -E 'output.elasticsearch.hosts=["localhost:9200"]' -E setup.kibana.host=localhost:5601

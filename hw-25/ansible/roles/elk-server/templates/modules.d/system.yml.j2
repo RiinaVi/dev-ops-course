@@ -1,0 +1,20 @@
+- module: system
+  syslog:
+    enabled: true
+  auth:
+    enabled: true
+  period: 10s
+  metricsets:
+    - cpu
+    - load
+    - memory
+    - network
+    - process
+    - process_summary
+    - socket_summary
+    - entropy
+    - core
+    - diskio
+    - socket
+    - service
+    - users
