@@ -1,0 +1,24 @@
+---
+- hosts: jenkins_controller
+  become: true
+  roles:
+    - jenkins-controller
+  vars:
+    jenkins_admin_username: admin
+    jenkins_admin_password: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      64343964666463653230663930663431303034386437646264633962663562336131313832623130
+      6636626263623138613133396336646332346436393436340a623562316563323861626638643331
+      66386630653739306136633934353133366366653130353863343533643836343131393931646134
+      6136326361383232370a636437346631343031636234616530386231346163373238346136626438
+      3137
+
+# Example
+#  ansible-playbook jenkins-playbook.yml \
+#     -i inventory.ini \
+#     --extra-vars "jenkins_ip=<вкажіть IP>" \
+#     --diff --check
+
+# Useful tags:
+#   --tags "install_jenkins_plugins" - install latest version of the plugins declared in default/main.yml
+#   --tags "template_config_files" - templates all config files: casc.yml + jobDSL folders/pipelines
