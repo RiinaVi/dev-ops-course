@@ -1,0 +1,8 @@
+server.port: {{ kibana_port }}
+server.host: {{ server_host }}
+
+elasticsearch.hosts: ["http://localhost:{{ es_port }}"]
+elasticsearch.username: {{ kibana_username }}
+elasticsearch.password: {{ kibana_password }}
+
+i18n.locale: "en"
