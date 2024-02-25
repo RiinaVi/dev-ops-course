@@ -1,0 +1,22 @@
+
+#ElasticSearch
+cluster_name: my-elasticsearch-cluster
+server_host: 0.0.0.0
+es_port: 9200
+path_data: /var/lib/elasticsearch
+path_logs: /var/log/elasticsearch
+discovery_type: single-node
+transport_ssl_enabled: false
+http_ssl_enabled: false
+es_username: elastic
+es_password:
+
+#Kibana
+kibana_port: 5601
+kibana_username: kibana
+
+#Logstash
+ls_path_data: /var/lib/logstash
+ls_path_logs: /var/lib/logstash
+log_level: info
+logstash_port: 9600

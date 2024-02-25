@@ -1,0 +1,17 @@
+---
+- name: Install the Logstash Debian package
+  ansible.builtin.apt:
+    update_cache: true
+    name: logstash
+    state: present
+
+- name: Enable Logstash
+  ansible.builtin.systemd:
+    name: logstash
+    enabled: true
+
+- name: Configuring Logstash
+  ansible.builtin.template:
+    src: logstash.yml.j2
+    dest: /etc/logstash/logstash.yml
+  notify: Restart Logstash

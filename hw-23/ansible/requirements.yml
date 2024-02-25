@@ -1,0 +1,14 @@
+---
+
+# Цей файл дозволяє вам автоматично встановлювати ролі та колекції,
+# які необхідні для вашого проекту, з використанням команди ansible-galaxy
+# Для встановлення колекцій використовується команда:
+# ansible-galaxy collection install -r requirements.yml
+
+collections:
+  - ansible.posix
+  - community.docker
+  - community.general
+  - community.mongodb
+  - community.mysql
+  - community.rabbitmq

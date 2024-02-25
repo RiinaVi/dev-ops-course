@@ -1,0 +1,10 @@
+path.data: {{ ls_path_data }}
+path.logs: {{ ls_path_logs }}
+
+http.host: "{{ server_host }}"
+http.port: "{{ logstash_port }}"
+
+log.level: {{ log_level }}
+
+xpack.security.transport.ssl.enabled: {{ transport_ssl_enabled }}
+xpack.security.http.ssl.enabled: {{ http_ssl_enabled }}
