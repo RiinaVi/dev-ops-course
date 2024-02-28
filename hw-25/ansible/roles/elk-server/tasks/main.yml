@@ -1,4 +1,9 @@
 ---
+- name: Install net-tools
+  ansible.builtin.apt:
+    name: net-tools
+    state: present
+
 - name: Import public GPG key
   ansible.builtin.apt_key:
     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -8,44 +13,37 @@
   ansible.builtin.apt_repository:
     repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
     state: present
-    update_cache: yes
 
 - name: Install elasticsearch
   ansible.builtin.apt:
     name: elasticsearch
     state: present
-    update_cache: yes
 
 - name: Configure elasticsearch
   ansible.builtin.template:
-    src: elasticsearch.yml.j2
+    src: etc/elasticsearch/elasticsearch.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
-    owner: elasticsearch
-    group: elasticsearch
-    mode: 0644
 
-- name: Enable and Start elasticsearch
+- name: Restart elasticsearch
   ansible.builtin.systemd:
     name: elasticsearch
-    state: started
+    state: restarted
     enabled: yes
 
 - name: Install Kibana
   ansible.builtin.apt:
     name: kibana
     state: present
-    update_cache: yes
 
 - name: Configure Kibana
   ansible.builtin.template:
-    src: kibana.yml.j2
+    src: etc/kibana/kibana.yml.j2
     dest: /etc/kibana/kibana.yml
-    mode: 0644
 
-- name: Enable and start Kibana
+- name: Restart Kibana
   ansible.builtin.systemd:
     name: kibana
-    state: started
+    state: restarted
     enabled: yes
 
 - name: Install logstash
@@ -55,14 +53,13 @@
 
 - name: Configure logstash
   ansible.builtin.template:
-    src: beats.conf.j2
+    src: etc/logstash/conf.d/beats.conf.j2
     dest: /etc/logstash/conf.d/beats.conf
-    mode: 0644
 
-- name: Enable and start logstash
+- name: Restart logstash
   ansible.builtin.systemd:
     name: logstash
-    state: started
+    state: restarted
     enabled: yes
 
 - name: Install filebeat
@@ -72,14 +69,13 @@
 
 - name: Configure filebeat
   ansible.builtin.template:
-    src: filebeat.yml.j2
-    dest: filebeat.yml
-    mode: 0644
+    src: etc/filebeat/filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
 
-- name: Enable and start filebeat
+- name: Restart filebeat
   ansible.builtin.systemd:
     name: filebeat
-    state: started
+    state: restarted
     enabled: yes
 
 - name: Install metricbeat
@@ -89,14 +85,13 @@
 
 - name: Configure metricbeat
   ansible.builtin.template:
-    src: metricbeat.yml.j2
-    dest: metricbeat.yml
-    mode: 0644
+    src: etc/metricbeat/metricbeat.yml.j2
+    dest: /etc/metricbeat/metricbeat.yml
 
-- name: Enable and start metricbeat
+- name: Restart metricbeat
   ansible.builtin.systemd:
     name: metricbeat
-    state: started
+    state: restarted
     enabled: yes
 
 - name: Enable filebeat modules

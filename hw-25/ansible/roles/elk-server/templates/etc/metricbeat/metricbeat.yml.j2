@@ -1,14 +1,14 @@
 metricbeat.config.modules:
   enabled: true
   reload.enabled: false
-  path: /modules.d/*.yml
+  path: /etc/metricbeat/modules.d/*.yml
 
 setup.template.settings:
   index.numbers_of_shards: 1
-  index.codec: 1
+  index.codec: best_compression
 
 output.logstash:
-  hosts: ["localhost:{{ beats_port }}"]
+  hosts: ["localhost:5044"]
 
 setup.ilm.overwrite: true
 

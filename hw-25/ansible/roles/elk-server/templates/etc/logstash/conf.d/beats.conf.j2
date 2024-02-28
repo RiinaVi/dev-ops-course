@@ -1,6 +1,6 @@
 input {
   beats {
-    port => {{ beats_port }}
+    port => 5044
   }
 }
 filter {
@@ -15,7 +15,7 @@ filter {
 }
 output {
   elasticsearch {
-    hosts => ["localhost:{{ es_port }}"]
+    hosts => ["localhost:9200"]
     index => "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
   }
 }
