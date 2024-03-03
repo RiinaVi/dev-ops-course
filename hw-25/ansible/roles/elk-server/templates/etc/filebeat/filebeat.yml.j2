@@ -5,7 +5,7 @@ filebeat.inputs:
     - /var/log/*.log
 
 output.logstash:
-  hosts: ["localhost:5044"]
+  hosts: ["localhost:{{ beats_port }}"]
 
 filebeat.config.modules:
   enabled: true

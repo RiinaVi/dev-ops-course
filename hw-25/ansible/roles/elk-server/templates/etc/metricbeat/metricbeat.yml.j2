@@ -4,11 +4,12 @@ metricbeat.config.modules:
   path: /etc/metricbeat/modules.d/*.yml
 
 setup.template.settings:
-  index.numbers_of_shards: 1
+  index.number_of_shards: 1
   index.codec: best_compression
 
 output.logstash:
   hosts: ["localhost:5044"]
+  enabled: true
 
 setup.ilm.overwrite: true
 

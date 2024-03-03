@@ -1,18 +1,18 @@
 node.name: {{ ansible_hostname }}
 
-network.host: 0.0.0.0
+network.host: {{ server_host }}
 
-http.host: 0.0.0.0
-http.port: 9200
+http.host: {{ server_host }}
+http.port: {{ es_port }}
 
-transport.host: 0.0.0.0
+transport.host: {{ server_host }}
 
-xpack.security.enabled: false
-xpack.security.transport.ssl.enabled: false
-xpack.security.http.ssl.enabled: false
+xpack.security.enabled: {{ security_enabled }}
+xpack.security.transport.ssl.enabled: {{ security_transport_ssl_enabled }}
+xpack.security.http.ssl.enabled: {{ security_http_ssl_enabled }}
 
 discovery.seed_hosts: ["127.0.0.1", "[::1]"]
 cluster.initial_master_nodes: ["{{ ansible_hostname }}"]
 
-path.data: /var/lib/elasticsearch
-path.logs: /var/log/elasticsearch
+path.data: {{ path_data }}
+path.logs: {{ path_logs }}
