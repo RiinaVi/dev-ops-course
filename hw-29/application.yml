@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: git@github.com:RiinaVi/dev-ops-course-final-project.git
+    repoURL: git@github.com:RiinaVi/dev-ops-course.git
     targetRevision: hw-29
     path: hw-29
   destination:
