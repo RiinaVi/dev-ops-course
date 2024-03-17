@@ -56,3 +56,5 @@ kubectl get secret argocd-initial-admin-secret -n argocd -o yaml
 echo {{ encodedPassword }} | base64 --decode
 
 #Log in with admin + decoded password
+
+kubectl apply -f application.yml
