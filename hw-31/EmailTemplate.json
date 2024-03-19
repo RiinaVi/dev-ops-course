@@ -1,0 +1,7 @@
+{
+  "Template": {
+    "TemplateName": "HW31EmailTemplate",
+    "SubjectPart": "Changes in {{DB}}",
+    "HtmlPart": "<div style=\"background: lightgray; padding: 20px; margin: 20px; font-family: Arial, sans-serif;\">\n  <p>The {{DB}} database was modified by {{EVENT_TYPE}} event</p>\n    <p>The event New Image was: {{NEW_IMAGE}}</p>\n  <p>The event Old Image was: {{OLD_IMAGE}}</p>\n</div>"
+  }
+}
