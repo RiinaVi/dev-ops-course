@@ -1,0 +1,18 @@
+node.name: {{ ansible_hostname }}
+
+network.host: {{ server_host }}
+
+http.host: {{ server_host }}
+http.port: {{ es_port }}
+
+transport.host: {{ server_host }}
+
+xpack.security.enabled: {{ security_enabled }}
+xpack.security.transport.ssl.enabled: {{ security_transport_ssl_enabled }}
+xpack.security.http.ssl.enabled: {{ security_http_ssl_enabled }}
+
+discovery.seed_hosts: ["127.0.0.1", "[::1]"]
+cluster.initial_master_nodes: ["{{ ansible_hostname }}"]
+
+path.data: {{ path_data }}
+path.logs: {{ path_logs }}

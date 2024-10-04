@@ -1,0 +1,17 @@
+server_host: 0.0.0.0
+security_enabled: false
+security_http_ssl_enabled: false
+security_transport_ssl_enabled: false
+# elasticsearch
+discovery_type: single-node
+es_port: 9200
+path_data: /var/lib/elasticsearch
+path_logs: /var/log/elasticsearch
+cluster_name: elastic
+# kibana
+kibana_port: 5601
+kibana_username: kibana
+kibana_password: pass
+# logstash
+beats_port: 5044
+
